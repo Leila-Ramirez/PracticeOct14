@@ -1,0 +1,61 @@
+---
+title: "Homework2"
+author: "Leila Ramirez"
+output: html_document
+date: "2025-09-17"
+---
+
+```{r}
+library(ggplot2)
+library(kableExtra)
+
+TallBuild <- read.csv ("Homework2_TallestBuildings.csv")
+```
+
+# Introduction
+
+The dataset includes information on the 200 tallest buildings, both completed and under construction, including variables like the location, height, material, and more. The goal is to explore relationships and possible correlations between variables, like height and status.
+
+# RQ1: How Tall Are the World's Tallest Buildings?
+
+```{r}
+TallBuild$HeightFt<- TallBuild$Height * 3.28084
+
+TB_ggplot <- ggplot(TallBuild)
+TB_ggplot + geom_histogram( aes(x=HeightFt), fill = "cadetblue", bins = 30, na.rm = TRUE) + labs (title = "Height of the World's Tallest Buildings", x = "Buidling Height (ft)", y= "Frequency") + xlim(750, 3500) + ylim (0, 50)
+```
+
+The data is right skewed with a median of `r round(median(TallBuild$HeightFt), digits = 2)` and an IQR of `r round( IQR(TallBuild$HeightFt), digits = 2)`. A large portion of the world's tallest buildings are between 750 and 1,500 feet.
+
+# RQ2: For Completed Buildings, is There a Relationship Between the Year it was Completed and Height?
+
+```{r}
+CompBuild <- TallBuild[TallBuild$Status == "Completed",]
+
+CompTB_ggplot <- ggplot(CompBuild)
+CompTB_ggplot + geom_point (aes (x = CompletionYear, y= HeightFt), color = "darkslategray3", size = 2, shape = 18) + labs (title = "Completion Year and Height", x = "Year of Completion", y = "Building Height (ft)")
+
+```
+
+There is no strong relationship between the year the building was completed and the building height as indicated by its little to no correlation: `r round (cor (CompBuild$CompletionYear, CompBuild$HeightFt), digits = 4)`. However, there is a large number of tall buildings that were completed within the past 10 years.
+
+# RQ3: Is Completion Status Impacted By the Building's Material?
+
+```{r}
+Clean_TB <-na.omit(TallBuild)
+Clean_TB_ggplot <- ggplot (Clean_TB)
+Clean_TB_ggplot + geom_bar (aes(x=Material, fill = Status)) +scale_fill_manual (values = c("Completed" = "darkolivegreen3", "Under construction" = "coral3"))
+#better to use 100% stacked bar graphs
+#switch the variable on the legend and x-axis to answer the question better
+
+```
+
+```{r}
+prop.table(table (Clean_TB$Material, Clean_TB$Status), 1)
+```
+
+Based on the table above, there is a weak relationship between the building's material and its completion status because both steel and composite building materials have a substantially higher likelihood of being completed than of being under construction. However, these results are also due to the higher proportion of completed buildings in the dataset, as around a third of tall buildings under construction don't have information on building materials.
+
+# Conclusion
+
+In short, a large portion of the world's tallest buildings are between 750 and 1,500 feet; the relationships between height and completion status, as well as completion status and building material, are weak or non-existent. Overall, the exploration of relationships between the variables of the dataset should continue as there was much that wasn't analyzed about the world's top 200 tallest buildings from the [Council on Tall Buildings and Urban Habitat](https://www.skyscrapercenter.com/buildings).
