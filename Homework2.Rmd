@@ -6,6 +6,7 @@ date: "2025-09-17"
 ---
 
 ```{r}
+# Edit for github practice.
 library(ggplot2)
 library(kableExtra)
 
@@ -59,3 +60,4 @@ Based on the table above, there is a weak relationship between the building's ma
 # Conclusion
 
 In short, a large portion of the world's tallest buildings are between 750 and 1,500 feet; the relationships between height and completion status, as well as completion status and building material, are weak or non-existent. Overall, the exploration of relationships between the variables of the dataset should continue as there was much that wasn't analyzed about the world's top 200 tallest buildings from the [Council on Tall Buildings and Urban Habitat](https://www.skyscrapercenter.com/buildings).
+
